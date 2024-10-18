@@ -15,7 +15,7 @@ TODO: Fill in this table with correct information.
 
 | Table                     | Name         | Github Id |
 |---------------------------|--------------|-----------|
-| UCSBDiningCommonsMenuItem |              |           |
+| UCSBDiningCommonsMenuItem | Nikhil Vyas  |nikhilvyas109           
 | UCSBOrganization          |              |           |
 | RecommendationRequest     |              |           |
 | MenuItemReview            |              |           |
