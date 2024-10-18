@@ -17,7 +17,7 @@ TODO: Fill in this table with correct information.
 |---------------------------|--------------|-----------|
 | UCSBDiningCommonsMenuItem | Nikhil Vyas  |nikhilvyas109           
 | UCSBOrganization          | Jackie Chen  |qwaszxjack |
-| RecommendationRequest     |              |           |
+| RecommendationRequest     | Alvin Wang   |alvinwang1 |
 | MenuItemReview            | Nilay Kundu  |nilay-kundu|
 | HelpRequest               | Michael Hu   |michaelhu88|
 | Articles                  | Piyush Jadhav|PiyushJadhav|
