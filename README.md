@@ -19,7 +19,7 @@ TODO: Fill in this table with correct information.
 | UCSBOrganization          | Jackie Chen  |qwaszxjack |
 | RecommendationRequest     |              |           |
 | MenuItemReview            | Nilay Kundu  |nilay-kundu|
-| HelpRequest               |              |           |
+| HelpRequest               | Michael Hu   |michaelhu88|
 | Articles                  | Piyush Jadhav|PiyushJadhav|
 
 Remember though, that in spite of these initial  assignments, it is still
