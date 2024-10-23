@@ -187,20 +187,18 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 assertEquals(expectedJson, responseString);
         }
 
-       /*  @WithMockUser(roles = { "ADMIN", "USER" })
+        @WithMockUser(roles = { "ADMIN", "USER" })
         @Test
-        public void admin_can_delete_a_date() throws Exception {
+        public void admin_can_delete_a_menu_item() throws Exception {
                 // arrange
 
-                LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
-
-                UCSBDiningCommonsMenuItem UCSBDiningCommonsMenuItem1 = UCSBDiningCommonsMenuItem.builder()
-                                .name("firstDayOfClasses")
-                                .quarterYYYYQ("20222")
-                                .localDateTime(ldt1)
+                UCSBDiningCommonMenuItem UCSBDiningCommonMenuItem1 = UCSBDiningCommonMenuItem.builder()
+                                .diningCommonsCode("ortega")
+                                .name("pasta")
+                                .station("entre")
                                 .build();
 
-                when(UCSBDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBDiningCommonsMenuItem1));
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBDiningCommonMenuItem1));
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -209,11 +207,11 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .andExpect(status().isOk()).andReturn();
 
                 // assert
-                verify(UCSBDiningCommonsMenuItemRepository, times(1)).findById(15L);
-                verify(UCSBDiningCommonsMenuItemRepository, times(1)).delete(any());
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(15L);
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).delete(any());
 
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("UCSBDiningCommonsMenuItem with id 15 deleted", json.get("message"));
+                assertEquals("UCSBDiningCommonMenuItem with id 15 deleted", json.get("message"));
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -222,7 +220,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                         throws Exception {
                 // arrange
 
-                when(UCSBDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.empty());
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.empty());
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -231,12 +229,12 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .andExpect(status().isNotFound()).andReturn();
 
                 // assert
-                verify(UCSBDiningCommonsMenuItemRepository, times(1)).findById(15L);
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
-                assertEquals("UCSBDiningCommonsMenuItem with id 15 not found", json.get("message"));
+                assertEquals("UCSBDiningCommonMenuItem with id 15 not found", json.get("message"));
         }
 
-        @WithMockUser(roles = { "ADMIN", "USER" })
+        /*@WithMockUser(roles = { "ADMIN", "USER" })
         @Test
         public void admin_can_edit_an_existing_UCSBDiningCommonsMenuItem() throws Exception {
                 // arrange
