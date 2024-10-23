@@ -80,20 +80,18 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
         // // Tests with mocks for database actions
 
-        /*@WithMockUser(roles = { "USER" })
+        @WithMockUser(roles = { "USER" })
         @Test
         public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
 
                 // arrange
-                LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
-
-                UCSBDiningCommonsMenuItem UCSBDiningCommonsMenuItem = UCSBDiningCommonsMenuItem.builder()
-                                .name("firstDayOfClasses")
-                                .quarterYYYYQ("20222")
-                                .localDateTime(ldt)
+                UCSBDiningCommonMenuItem UCSBDiningCommonsMenuItem = UCSBDiningCommonMenuItem.builder()
+                                .diningCommonsCode("ortega")
+                                .name("pasta")
+                                .station("entre")
                                 .build();
 
-                when(UCSBDiningCommonsMenuItemRepository.findById(eq(7L))).thenReturn(Optional.of(UCSBDiningCommonsMenuItem));
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(7L))).thenReturn(Optional.of(UCSBDiningCommonsMenuItem));
 
                 // act
                 MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=7"))
@@ -101,7 +99,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 // assert
 
-                verify(UCSBDiningCommonsMenuItemRepository, times(1)).findById(eq(7L));
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(eq(7L));
                 String expectedJson = mapper.writeValueAsString(UCSBDiningCommonsMenuItem);
                 String responseString = response.getResponse().getContentAsString();
                 assertEquals(expectedJson, responseString);
@@ -113,7 +111,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 // arrange
 
-                when(UCSBDiningCommonsMenuItemRepository.findById(eq(7L))).thenReturn(Optional.empty());
+                when(ucsbDiningCommonsMenuItemRepository.findById(eq(7L))).thenReturn(Optional.empty());
 
                 // act
                 MvcResult response = mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem?id=7"))
@@ -121,11 +119,11 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 // assert
 
-                verify(UCSBDiningCommonsMenuItemRepository, times(1)).findById(eq(7L));
+                verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(eq(7L));
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("EntityNotFoundException", json.get("type"));
-                assertEquals("UCSBDiningCommonsMenuItem with id 7 not found", json.get("message"));
-        }*/
+                assertEquals("UCSBDiningCommonMenuItem with id 7 not found", json.get("message"));
+        }
 
         @WithMockUser(roles = { "USER" })
         @Test
