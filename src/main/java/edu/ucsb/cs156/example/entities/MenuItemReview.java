@@ -9,22 +9,23 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
- * This is a JPA entity that represents a MenuItemReview, i.e. an entry
- * that corresponds to a review of a UCSB Dining Hall item.
+ * This is a JPA entity that represents a MenuItemReviews
  */
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Entity(name = "menuitemreviews")
+@Entity(name = "menuitemreview")
 public class MenuItemReview {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
   private long itemId;
   private String reviewerEmail;
-  private long stars;
+  private int stars;
+  private LocalDateTime dateReviewed;
   private String comments;
 }

@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.MenuItemReview;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
@@ -43,7 +44,7 @@ public class MenuItemReviewController extends ApiController{
     /**
      * List all Menu Item Reviews
      * 
-     * @return an iterable of MenuItemReview
+     * @return an iterable of MenuItemReviews
      */
     @Operation(summary= "List all menu item reviews")
     @PreAuthorize("hasRole('ROLE_USER')")
@@ -59,6 +60,7 @@ public class MenuItemReviewController extends ApiController{
      * @param itemId                the id of the menu item
      * @param reviewerEmail         the email of the reviewer
      * @param stars                 number of stars on the review
+     * @param dateReviewed          the date
      * @param comments              review comments/feedback
      * @return the saved menuitemreview
      */
@@ -68,7 +70,8 @@ public class MenuItemReviewController extends ApiController{
     public MenuItemReview postMenuItemReview(
             @Parameter(name="itemId") @RequestParam long itemId,
             @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
-            @Parameter(name="stars") @RequestParam long stars,
+            @Parameter(name="stars") @RequestParam int stars,
+            @Parameter(name="dateReviewed", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateReviewed") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateReviewed,
             @Parameter(name="comments") @RequestParam String comments)
             throws JsonProcessingException {
 
@@ -76,6 +79,7 @@ public class MenuItemReviewController extends ApiController{
         menuItemReview.setItemId(itemId);
         menuItemReview.setReviewerEmail(reviewerEmail);
         menuItemReview.setStars(stars);
+        menuItemReview.setDateReviewed(dateReviewed);
         menuItemReview.setComments(comments);
 
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
