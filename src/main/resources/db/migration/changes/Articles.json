@@ -35,8 +35,8 @@
                   },
                   {
                     "column": {
-                      "name": "LOCAL_DATE_TIME",
-                      "type": "TIMESTAMP"
+                      "name": "TITLE",
+                      "type": "VARCHAR(255)"
                     }
                   },
                   {
@@ -47,7 +47,7 @@
                   },
                   {
                     "column": {
-                      "name": "TITLE",
+                      "name": "EXPLANATION",
                       "type": "VARCHAR(255)"
                     }
                   },
@@ -59,8 +59,8 @@
                   },
                   {
                     "column": {
-                      "name": "EXPLANATION",
-                      "type": "VARCHAR(255)"
+                      "name": "DATE_ADDED",
+                      "type": "TIMESTAMP"
                     }
                   }
                 ],

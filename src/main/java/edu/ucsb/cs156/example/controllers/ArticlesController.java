@@ -36,32 +36,38 @@ public class ArticlesController extends ApiController {
     @Autowired
     ArticlesRepository articlesRepository;
 
+    @Operation(summary = "List all articles")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<Articles> allArticles() {
         Iterable<Articles> records = articlesRepository.findAll();
         return records;
     }
 
+    @Operation(summary = "Create a new article")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public Articles postArticles(
             @Parameter(name = "title") @RequestParam String title,
             @Parameter(name = "url") @RequestParam String url,
             @Parameter(name = "explanation") @RequestParam String explanation,
             @Parameter(name = "email") @RequestParam String email,
-            @Parameter(name = "date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateAdded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
+            @Parameter(name = "dateAdded") @RequestParam("dateAdded") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateAdded)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-        log.info("localDateTime={}", dateAdded);
+        log.info("dateAdded={}", dateAdded);
 
-        Articles article = new Articles();
-        article.setTitle(title);
-        article.setUrl(url);
-        article.setDateAdded(dateAdded);
+        Articles records = new Articles();
+        records.setTitle(title);
+        records.setUrl(url);
+        records.setExplanation(explanation);
+        records.setEmail(email);
+        records.setDateAdded(dateAdded);
 
-        Articles savedArticles = articlesRepository.save(article);
+        Articles savedArticles = articlesRepository.save(records);
 
         return savedArticles;
     }
