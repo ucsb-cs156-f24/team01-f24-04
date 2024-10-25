@@ -1,6 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.MenuItemReview;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 
@@ -80,5 +81,23 @@ public class MenuItemReviewController extends ApiController {
 
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
         return savedMenuItemReview;
+    }
+
+    /**
+     * Delete a MenuItemReview
+     * 
+     * @param id         the id of the review to delete
+     * @return           a message indicating the review was deleted
+     */
+    @Operation(summary= "Delete a MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteMenuItemReview(
+            @Parameter(name="id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        menuItemReviewRepository.delete(menuItemReview);
+        return genericMessage("MenuItemReview with id %s deleted".formatted(id));
     }
 }
