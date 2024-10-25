@@ -127,32 +127,29 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
 
 
     @WithMockUser(roles = { "ADMIN", "USER" })
-    @Test
-    public void an_admin_user_can_post_a_new_menuItemReview() throws Exception {
-            // arrange
+@Test
+public void an_admin_user_can_post_a_new_menuitemreview() throws Exception {
 
-            LocalDateTime ldt1 = LocalDateTime.parse("2024-10-21T00:00:00");
+    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
 
-            MenuItemReview menuItemReview = MenuItemReview.builder()
-                            .itemId(1)
-                            .reviewerEmail("o@gmail.com")
-                            .stars(1)
-                            .comments("comment")
-                            .dateReviewed(ldt1)
-                            .build();
+    MenuItemReview menuItemReview = MenuItemReview.builder()
+                    .itemId(1)
+                    .reviewerEmail("test@example.com")
+                    .comments("Tasted great!")
+                    .stars(5)
+                    .dateReviewed(ldt1)
+                    .build();
 
-            when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
+    when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
 
-            // act
-            MvcResult response = mockMvc.perform(
-                            post("/api/menuitemreviews/post?itemId=1&reviewerEmail=o@gmail.com&stars=1&comments=comment&dateReviewed=2024-10-21T00:00:00")
-                                            .with(csrf()))
-                            .andExpect(status().isOk()).andReturn();
+    MvcResult response = mockMvc.perform(
+                    post("/api/menuitemreviews/post?itemId=1&reviewerEmail=test@example.com&comments=Tasted great!&stars=5&localDateTime=2022-01-03T00:00:00")
+                                    .with(csrf()))
+                    .andExpect(status().isOk()).andReturn();
 
-            // assert
-            verify(menuItemReviewRepository, times(1)).save(menuItemReview);
-            String expectedJson = mapper.writeValueAsString(menuItemReview);
-            String responseString = response.getResponse().getContentAsString();
-            assertEquals(expectedJson, responseString);
-    }
+    verify(menuItemReviewRepository, times(1)).save(menuItemReview);
+    String expectedJson = mapper.writeValueAsString(menuItemReview);
+    String responseString = response.getResponse().getContentAsString();
+    assertEquals(expectedJson, responseString);
+}
 }

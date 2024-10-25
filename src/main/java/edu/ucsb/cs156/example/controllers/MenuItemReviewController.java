@@ -1,9 +1,7 @@
 package edu.ucsb.cs156.example.controllers;
 
 import edu.ucsb.cs156.example.entities.MenuItemReview;
-import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
-import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -30,40 +28,33 @@ import jakarta.validation.Valid;
 import java.time.LocalDateTime;
 
 /**
- * This is a REST controller for MenuItemReview
+ * This is a REST controller for UCSBDates
  */
 
- @Tag(name = "MenuItemReviews")
- @RequestMapping("/api/menuitemreviews")
- @RestController
- @Slf4j
-public class MenuItemReviewController extends ApiController{
+@Tag(name = "MenuItemReviews")
+@RequestMapping("/api/menuitemreviews")
+@RestController
+@Slf4j
+public class MenuItemReviewController extends ApiController {
+
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
 
     /**
-     * List all Menu Item Reviews
+     * List all MenuItemReviews 
      * 
-     * @return an iterable of MenuItemReviews
+     * @return an iterable of MenuItemReview
      */
+    
     @Operation(summary= "List all menu item reviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
-    public Iterable<MenuItemReview> allMenuItemReviews() {
+    public Iterable<MenuItemReview> allMenuItemReviewS() {
         Iterable<MenuItemReview> reviews = menuItemReviewRepository.findAll();
         return reviews;
     }
 
-    /**
-     * Create a new menu item review
-     * 
-     * @param itemId                the id of the menu item
-     * @param reviewerEmail         the email of the reviewer
-     * @param stars                 number of stars on the review
-     * @param dateReviewed          the date
-     * @param comments              review comments/feedback
-     * @return the saved menuitemreview
-     */
+
     @Operation(summary= "Create a new menu item review")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -71,19 +62,23 @@ public class MenuItemReviewController extends ApiController{
             @Parameter(name="itemId") @RequestParam long itemId,
             @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
             @Parameter(name="stars") @RequestParam int stars,
-            @Parameter(name="dateReviewed", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateReviewed") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateReviewed,
+            @Parameter(name="localDateTime", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("localDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime localDateTime,
             @Parameter(name="comments") @RequestParam String comments)
             throws JsonProcessingException {
+
+        // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        // See: https://www.baeldung.com/spring-date-parameters
+
+        log.info("localDateTime={}", localDateTime);
 
         MenuItemReview menuItemReview = new MenuItemReview();
         menuItemReview.setItemId(itemId);
         menuItemReview.setReviewerEmail(reviewerEmail);
-        menuItemReview.setStars(stars);
-        menuItemReview.setDateReviewed(dateReviewed);
         menuItemReview.setComments(comments);
+        menuItemReview.setStars(stars);
+        menuItemReview.setDateReviewed(localDateTime);
 
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
-
         return savedMenuItemReview;
     }
 }
