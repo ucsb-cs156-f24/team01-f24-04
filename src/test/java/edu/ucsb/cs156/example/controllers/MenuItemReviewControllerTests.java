@@ -127,29 +127,79 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
 
 
     @WithMockUser(roles = { "ADMIN", "USER" })
-@Test
-public void an_admin_user_can_post_a_new_menuitemreview() throws Exception {
+    @Test
+    public void an_admin_user_can_post_a_new_menuitemreview() throws Exception {
 
-    LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+        LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
 
-    MenuItemReview menuItemReview = MenuItemReview.builder()
-                    .itemId(1)
-                    .reviewerEmail("test@example.com")
-                    .comments("Tasted great!")
-                    .stars(5)
-                    .dateReviewed(ldt1)
-                    .build();
+        MenuItemReview menuItemReview = MenuItemReview.builder()
+                        .itemId(1)
+                        .reviewerEmail("test@example.com")
+                        .comments("Tasted great!")
+                        .stars(5)
+                        .dateReviewed(ldt)
+                        .build();
 
-    when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
+        when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
 
-    MvcResult response = mockMvc.perform(
-                    post("/api/menuitemreviews/post?itemId=1&reviewerEmail=test@example.com&comments=Tasted great!&stars=5&localDateTime=2022-01-03T00:00:00")
-                                    .with(csrf()))
-                    .andExpect(status().isOk()).andReturn();
+        MvcResult response = mockMvc.perform(
+                        post("/api/menuitemreviews/post?itemId=1&reviewerEmail=test@example.com&comments=Tasted great!&stars=5&localDateTime=2022-01-03T00:00:00")
+                                        .with(csrf()))
+                        .andExpect(status().isOk()).andReturn();
 
-    verify(menuItemReviewRepository, times(1)).save(menuItemReview);
-    String expectedJson = mapper.writeValueAsString(menuItemReview);
-    String responseString = response.getResponse().getContentAsString();
-    assertEquals(expectedJson, responseString);
-}
+        verify(menuItemReviewRepository, times(1)).save(menuItemReview);
+        String expectedJson = mapper.writeValueAsString(menuItemReview);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
+
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+
+        // arrange
+        LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
+
+        MenuItemReview menuItemReview = MenuItemReview.builder()
+                        .itemId(1)
+                        .reviewerEmail("test@example.com")
+                        .comments("Tasted great!")
+                        .stars(5)
+                        .dateReviewed(ldt)
+                        .build();
+
+        when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.of(menuItemReview));
+
+        // act
+        MvcResult response = mockMvc.perform(get("/api/menuitemreviews?id=1"))
+                        .andExpect(status().isOk()).andReturn();
+
+        // assert
+
+        verify(menuItemReviewRepository, times(1)).findById(eq(1L));
+        String expectedJson = mapper.writeValueAsString(menuItemReview);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
+
+        @WithMockUser(roles = { "USER" })
+        @Test
+        public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+
+            // arrange
+
+            when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.empty());
+
+            // act
+            MvcResult response = mockMvc.perform(get("/api/menuitemreviews?id=123"))
+                            .andExpect(status().isNotFound()).andReturn();
+
+            // assert
+
+            verify(menuItemReviewRepository, times(1)).findById(eq(123L));
+            Map<String, Object> json = responseToJson(response);
+            assertEquals("EntityNotFoundException", json.get("type"));
+            assertEquals("MenuItemReview with id 123 not found", json.get("message"));
+        }
 }
