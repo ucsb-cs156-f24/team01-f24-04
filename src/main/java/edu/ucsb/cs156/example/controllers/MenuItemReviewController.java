@@ -1,16 +1,12 @@
 package edu.ucsb.cs156.example.controllers;
-
 import edu.ucsb.cs156.example.entities.MenuItemReview;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,13 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
-
 import java.time.LocalDateTime;
 
 /**
- * This is a REST controller for UCSBDates
+ * This is a REST controller for MenuItemReviews
  */
 
 @Tag(name = "MenuItemReviews")
@@ -36,17 +30,15 @@ import java.time.LocalDateTime;
 @RestController
 @Slf4j
 public class MenuItemReviewController extends ApiController {
-
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
-
     /**
      * List all MenuItemReviews 
      * 
      * @return an iterable of MenuItemReview
      */
     
-    @Operation(summary= "List all menu item reviews")
+    @Operation(summary= "List all MenuItemReviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<MenuItemReview> allMenuItemReviewS() {
@@ -54,8 +46,7 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
-
-    @Operation(summary= "Create a new menu item review")
+    @Operation(summary= "Create a new MenuItemReview")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public MenuItemReview postMenuItemReview(
@@ -77,9 +68,42 @@ public class MenuItemReviewController extends ApiController {
         menuItemReview.setComments(comments);
         menuItemReview.setStars(stars);
         menuItemReview.setDateReviewed(localDateTime);
-
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
         return savedMenuItemReview;
+    }
+
+    /**
+     * Get a single review by id
+     /** Get a single review by id
+     * 
+     * @param id the id of the review
+     * @return a MenuItemReview
+     */
+    @Operation(summary= "Get a single MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public MenuItemReview getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+        return menuItemReview;
+    }
+
+    /**
+     * Delete a MenuItemReview
+     * 
+     * @param id         the id of the review to delete
+     * @return           a message indicating the review was deleted
+     */
+    @Operation(summary= "Delete a MenuItemReview")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @DeleteMapping("")
+    public Object deleteMenuItemReview(
+            @Parameter(name="id") @RequestParam Long id) {
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+        menuItemReviewRepository.delete(menuItemReview);
+        return genericMessage("MenuItemReview with id %s deleted".formatted(id));
     }
 
     /**
@@ -104,7 +128,7 @@ public class MenuItemReviewController extends ApiController {
         menuItemReview.setStars(incoming.getStars());
         menuItemReview.setDateReviewed(incoming.getDateReviewed());
         menuItemReview.setComments(incoming.getComments());
-        
+
 
         menuItemReviewRepository.save(menuItemReview);
 

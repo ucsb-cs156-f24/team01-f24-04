@@ -33,7 +33,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-
 @WebMvcTest(controllers = MenuItemReviewController.class)
 @Import(TestConfig.class)
 public class MenuItemReviewControllerTests extends ControllerTestCase{
@@ -45,7 +44,6 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
     UserRepository userRepository;
 
     // Authorization tests for /api/ucsbdates/admin/all
-
     @Test
     public void logged_out_users_cannot_get_all() throws Exception {
             mockMvc.perform(get("/api/menuitemreviews/all"))
@@ -59,7 +57,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
                             .andExpect(status().is(200)); // logged
     }
 
-    // @Test
+    @Test
     public void logged_out_users_cannot_get_by_id() throws Exception {
             mockMvc.perform(get("/api/menuitemreviews?id=7"))
                             .andExpect(status().is(403)); // logged out users can't get by id
@@ -80,7 +78,6 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
             mockMvc.perform(post("/api/menuitemreviews/post"))
                             .andExpect(status().is(403)); // only admins can post
     }
-
 
     @WithMockUser(roles = { "USER" })
     @Test
@@ -106,6 +103,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
                     .comments("comment")
                     .dateReviewed(ldt2)
                     .build();
+        
 
         ArrayList<MenuItemReview> expectedReviews = new ArrayList<>();
         expectedReviews.addAll(Arrays.asList(menuItemReview1, menuItemReview2));
@@ -152,6 +150,93 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
+
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_exists() throws Exception {
+        // arrange
+        LocalDateTime ldt = LocalDateTime.parse("2022-01-03T00:00:00");
+        MenuItemReview menuItemReview = MenuItemReview.builder()
+                        .itemId(1)
+                        .reviewerEmail("test@example.com")
+                        .comments("Tasted great!")
+                        .stars(5)
+                        .dateReviewed(ldt)
+                        .build();
+
+        when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.of(menuItemReview));
+
+        // act
+        MvcResult response = mockMvc.perform(get("/api/menuitemreviews?id=1"))
+                        .andExpect(status().isOk()).andReturn();
+
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(eq(1L));
+        String expectedJson = mapper.writeValueAsString(menuItemReview);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
+
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void test_that_logged_in_user_can_get_by_id_when_the_id_does_not_exist() throws Exception {
+        // arrange
+        when(menuItemReviewRepository.findById(eq(1L))).thenReturn(Optional.empty());
+        // act
+        MvcResult response = mockMvc.perform(get("/api/menuitemreviews?id=123"))
+                        .andExpect(status().isNotFound()).andReturn();
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(eq(123L));
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("EntityNotFoundException", json.get("type"));
+        assertEquals("MenuItemReview with id 123 not found", json.get("message"));
+    }
+
+  
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_can_delete_a_menuitemreview() throws Exception {
+        // arrange
+        LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
+        MenuItemReview menuItemReview1 = MenuItemReview.builder()
+                    .itemId(15)
+                    .reviewerEmail("test@example.com")
+                    .comments("So terrible!")
+                    .stars(1)
+                    .dateReviewed(ldt1)
+                    .build();
+        when(menuItemReviewRepository.findById(eq(15L))).thenReturn(Optional.of(menuItemReview1));
+        // act
+        MvcResult response = mockMvc.perform(
+                        delete("/api/menuitemreviews?id=15")
+                                        .with(csrf()))
+                        .andExpect(status().isOk()).andReturn();
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(15L);
+        verify(menuItemReviewRepository, times(1)).delete(any());
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("MenuItemReview with id 15 deleted", json.get("message"));
+    }
+  
+  
+    @WithMockUser(roles = { "ADMIN", "USER" })
+    @Test
+    public void admin_tries_to_delete_non_existant_menuitemreview_and_gets_right_error_message()
+                    throws Exception {
+        // arrange
+        when(menuItemReviewRepository.findById(eq(15L))).thenReturn(Optional.empty());
+        // act
+        MvcResult response = mockMvc.perform(
+                        delete("/api/menuitemreviews?id=15")
+                                        .with(csrf()))
+                        .andExpect(status().isNotFound()).andReturn();
+        // assert
+        verify(menuItemReviewRepository, times(1)).findById(15L);
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("MenuItemReview with id 15 not found", json.get("message"));
+    }
+    
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
