@@ -1,5 +1,6 @@
 package edu.ucsb.cs156.example.controllers;
 import edu.ucsb.cs156.example.entities.MenuItemReview;
+import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,12 +33,12 @@ import java.time.LocalDateTime;
 public class MenuItemReviewController extends ApiController {
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
+
     /**
      * List all MenuItemReviews 
      * 
      * @return an iterable of MenuItemReview
      */
-    
     @Operation(summary= "List all MenuItemReviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
@@ -46,6 +47,16 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
+    /**
+     * Post a new MenuItemReview 
+     * 
+     * @param itemId
+     * @param reviewerEmail
+     * @param stars
+     * @param localDateTime
+     * @param comments
+     * @return the new MenuItemReview
+     */
     @Operation(summary= "Create a new MenuItemReview")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
@@ -72,20 +83,19 @@ public class MenuItemReviewController extends ApiController {
         return savedMenuItemReview;
     }
 
-    /**
-     * Get a single review by id
      /** Get a single review by id
      * 
      * @param id the id of the review
      * @return a MenuItemReview
      */
-    @Operation(summary= "Get a single MenuItemReview")
+    @Operation(summary= "Get a single date")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public MenuItemReview getById(
             @Parameter(name="id") @RequestParam Long id) {
         MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
         return menuItemReview;
     }
 
@@ -102,9 +112,11 @@ public class MenuItemReviewController extends ApiController {
             @Parameter(name="id") @RequestParam Long id) {
         MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
         menuItemReviewRepository.delete(menuItemReview);
         return genericMessage("MenuItemReview with id %s deleted".formatted(id));
     }
+  
 
     /**
      * Update a single review
