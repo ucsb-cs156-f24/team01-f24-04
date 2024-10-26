@@ -1,17 +1,13 @@
 package edu.ucsb.cs156.example.controllers;
-
 import edu.ucsb.cs156.example.entities.MenuItemReview;
 import edu.ucsb.cs156.example.entities.UCSBDate;
 import edu.ucsb.cs156.example.errors.EntityNotFoundException;
 import edu.ucsb.cs156.example.repositories.MenuItemReviewRepository;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,13 +19,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import jakarta.validation.Valid;
-
 import java.time.LocalDateTime;
 
 /**
- * This is a REST controller for UCSBDates
+ * This is a REST controller for MenuItemReviews
  */
 
 @Tag(name = "MenuItemReviews")
@@ -37,7 +31,6 @@ import java.time.LocalDateTime;
 @RestController
 @Slf4j
 public class MenuItemReviewController extends ApiController {
-
     @Autowired
     MenuItemReviewRepository menuItemReviewRepository;
 
@@ -46,8 +39,7 @@ public class MenuItemReviewController extends ApiController {
      * 
      * @return an iterable of MenuItemReview
      */
-    
-    @Operation(summary= "List all menu item reviews")
+    @Operation(summary= "List all MenuItemReviews")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<MenuItemReview> allMenuItemReviewS() {
@@ -55,8 +47,17 @@ public class MenuItemReviewController extends ApiController {
         return reviews;
     }
 
-
-    @Operation(summary= "Create a new menu item review")
+    /**
+     * Post a new MenuItemReview 
+     * 
+     * @param itemId
+     * @param reviewerEmail
+     * @param stars
+     * @param localDateTime
+     * @param comments
+     * @return the new MenuItemReview
+     */
+    @Operation(summary= "Create a new MenuItemReview")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public MenuItemReview postMenuItemReview(
@@ -78,13 +79,11 @@ public class MenuItemReviewController extends ApiController {
         menuItemReview.setComments(comments);
         menuItemReview.setStars(stars);
         menuItemReview.setDateReviewed(localDateTime);
-
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
         return savedMenuItemReview;
     }
 
-    /**
-     * Get a single review by id
+     /** Get a single review by id
      * 
      * @param id the id of the review
      * @return a MenuItemReview
@@ -116,5 +115,35 @@ public class MenuItemReviewController extends ApiController {
 
         menuItemReviewRepository.delete(menuItemReview);
         return genericMessage("MenuItemReview with id %s deleted".formatted(id));
+    }
+  
+
+    /**
+     * Update a single review
+     * 
+     * @param id            id of the review to update
+     * @param incoming      the new review
+     * @return the updated review object
+     */
+    @Operation(summary= "Update a single review")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PutMapping("")
+    public MenuItemReview updateMenuItemReview(
+        @Parameter(name="id") @RequestParam Long id,
+        @RequestBody @Valid MenuItemReview incoming) {
+
+        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+
+        menuItemReview.setItemId(incoming.getItemId());
+        menuItemReview.setReviewerEmail(incoming.getReviewerEmail());
+        menuItemReview.setStars(incoming.getStars());
+        menuItemReview.setDateReviewed(incoming.getDateReviewed());
+        menuItemReview.setComments(incoming.getComments());
+
+
+        menuItemReviewRepository.save(menuItemReview);
+
+        return menuItemReview;
     }
 }
