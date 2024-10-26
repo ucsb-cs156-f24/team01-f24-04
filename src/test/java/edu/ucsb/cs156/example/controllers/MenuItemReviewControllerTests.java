@@ -79,6 +79,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
                             .andExpect(status().is(403)); // only admins can post
     }
 
+    
     @WithMockUser(roles = { "USER" })
     @Test
     public void logged_in_user_can_get_all_menuItemReviews() throws Exception {
@@ -121,7 +122,6 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
-
 
 
     @WithMockUser(roles = { "ADMIN", "USER" })
@@ -177,6 +177,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         String responseString = response.getResponse().getContentAsString();
         assertEquals(expectedJson, responseString);
     }
+
 
     @WithMockUser(roles = { "USER" })
     @Test
@@ -236,7 +237,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         Map<String, Object> json = responseToJson(response);
         assertEquals("MenuItemReview with id 15 not found", json.get("message"));
     }
-    
+
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
@@ -281,6 +282,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         String responseString = response.getResponse().getContentAsString();
         assertEquals(requestBody, responseString);
     }
+
 
     @WithMockUser(roles = { "ADMIN", "USER" })
     @Test
