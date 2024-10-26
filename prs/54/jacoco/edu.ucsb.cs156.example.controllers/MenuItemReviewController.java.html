@@ -84,6 +84,23 @@ import java.time.LocalDateTime;
     }
 
     /**
+     * Get a single review by id
+     * 
+     * @param id the id of the review
+     * @return a MenuItemReview
+     */
+    @Operation(summary= &quot;Get a single date&quot;)
+    @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+    @GetMapping(&quot;&quot;)
+    public MenuItemReview getById(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L97">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L98">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+
+<span class="fc" id="L100">        return menuItemReview;</span>
+    }
+
+    /**
      * Delete a MenuItemReview
      * 
      * @param id         the id of the review to delete
@@ -94,11 +111,11 @@ import java.time.LocalDateTime;
     @DeleteMapping(&quot;&quot;)
     public Object deleteMenuItemReview(
             @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
-<span class="fc" id="L97">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
-<span class="fc" id="L98">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
+<span class="fc" id="L114">        MenuItemReview menuItemReview = menuItemReviewRepository.findById(id)</span>
+<span class="fc" id="L115">                .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));</span>
 
-<span class="fc" id="L100">        menuItemReviewRepository.delete(menuItemReview);</span>
-<span class="fc" id="L101">        return genericMessage(&quot;MenuItemReview with id %s deleted&quot;.formatted(id));</span>
+<span class="fc" id="L117">        menuItemReviewRepository.delete(menuItemReview);</span>
+<span class="fc" id="L118">        return genericMessage(&quot;MenuItemReview with id %s deleted&quot;.formatted(id));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
