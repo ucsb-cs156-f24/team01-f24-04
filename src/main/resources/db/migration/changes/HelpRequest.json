@@ -1,0 +1,80 @@
+{
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "HelpRequest-1",
+        "author": "michaelhu88",
+        "preConditions": [
+          {
+            "onFail": "MARK_RAN"
+          },
+          {
+            "not": [
+              {
+                "tableExists": {
+                  "tableName": "helprequest"
+                }
+              }
+            ]
+          }
+        ],
+        "changes": [
+          {
+            "createTable": {
+              "columns": [
+                {
+                  "column": {
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "helprequest_PK"
+                    },
+                    "name": "id",
+                    "type": "BIGINT"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "requester_email",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "team_id",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "table_or_breakout_room",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "request_time",
+                    "type": "TIMESTAMP"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "explanation",
+                    "type": "TEXT"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "solved",
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "tableName": "helprequest"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
