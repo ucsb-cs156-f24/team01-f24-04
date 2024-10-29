@@ -65,5 +65,32 @@ import java.time.LocalDateTime;
 <span class="fc" id="L65">    return savedUcsbDiningCommonMenuItem;</span>
 }
 
+    @DeleteMapping(&quot;&quot;)
+    public Object deleteUCSBDiningCommonMenuItem(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L71">        UCSBDiningCommonMenuItem ucsbDiningCommonMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L72">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonMenuItem.class, id));</span>
+
+<span class="fc" id="L74">        ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonMenuItem);</span>
+<span class="fc" id="L75">        return genericMessage(&quot;UCSBDiningCommonMenuItem with id %s deleted&quot;.formatted(id));</span>
+    }
+
+    @PutMapping(&quot;&quot;)
+    public UCSBDiningCommonMenuItem updateUCSBDiningCommonMenuItem(
+            @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+            @RequestBody @Valid UCSBDiningCommonMenuItem incoming) {
+
+<span class="fc" id="L83">        UCSBDiningCommonMenuItem ucsbDiningCommonMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)</span>
+<span class="fc" id="L84">                .orElseThrow(() -&gt; new EntityNotFoundException(UCSBDiningCommonMenuItem.class, id));</span>
+
+<span class="fc" id="L86">        ucsbDiningCommonMenuItem.setDiningCommonsCode(incoming.getDiningCommonsCode());</span>
+<span class="fc" id="L87">        ucsbDiningCommonMenuItem.setName(incoming.getName());</span>
+<span class="fc" id="L88">        ucsbDiningCommonMenuItem.setStation(incoming.getStation());</span>
+
+<span class="fc" id="L90">        ucsbDiningCommonsMenuItemRepository.save(ucsbDiningCommonMenuItem);</span>
+
+<span class="fc" id="L92">        return ucsbDiningCommonMenuItem;</span>
+    }
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
