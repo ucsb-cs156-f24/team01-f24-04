@@ -3,7 +3,7 @@
       {
         "changeSet": {
           "id": "UCSBDiningCommonsMenuItem-1",
-          "author": "MattP",
+          "author": "NikhilV",
           "preConditions": [
             {
               "onFail": "MARK_RAN"
@@ -35,7 +35,7 @@
                   },
                   {
                     "column": {
-                      "name": "DININGCOMMONSCODE",
+                      "name": "DINING_COMMONS_CODE",
                       "type": "VARCHAR(255)"
                     }
                   },
