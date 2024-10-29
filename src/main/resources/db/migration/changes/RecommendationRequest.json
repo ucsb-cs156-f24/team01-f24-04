@@ -1,68 +1,80 @@
 {
-    "databaseChangeLog": [
-      {
-        "changeSet": {
-          "id": "RecRequest-1",
-          "author": "alvinwang",
-          "preConditions": [
-            {
-              "onFail": "MARK_RAN"
-            },
-            {
-              "not": [
+  "databaseChangeLog": [
+    {
+      "changeSet": {
+        "id": "RecommendationRequest-1",
+        "author": "MikeP",
+        "preConditions": [
+          {
+            "onFail": "MARK_RAN"
+          },
+          {
+            "not": [
+              {
+                "tableExists": {
+                  "tableName": "RECOMMENDATIONREQUEST"
+                }
+              }
+            ]
+          }
+        ],
+        "changes": [
+          {
+            "createTable": {
+              "columns": [
                 {
-                  "tableExists": {
-                    "tableName": "RECREQUESTS"
+                  "column": {
+                    "autoIncrement": true,
+                    "constraints": {
+                      "primaryKey": true,
+                      "primaryKeyName": "RECOMMENDATIONREQUEST_PK"
+                    },
+                    "name": "ID",
+                    "type": "BIGINT"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "REQUESTER_EMAIL",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "PROFESSOR_EMAIL",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "EXPLANATION",
+                    "type": "VARCHAR(255)"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "DATE_REQUESTED",
+                    "type": "TIMESTAMP"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "DATE_NEEDED",
+                    "type": "TIMESTAMP"
+                  }
+                },
+                {
+                  "column": {
+                    "name": "DONE",
+                    "type": "BOOLEAN"
                   }
                 }
-              ]
+              ],
+              "tableName": "RECOMMENDATIONREQUEST"
             }
-          ],
-          "changes": [
-            {
-              "createTable": {
-                "columns": [
-                  {
-                    "column": {
-                      "autoIncrement": true,
-                      "constraints": {
-                        "primaryKey": true,
-                        "primaryKeyName": "RECREQUESTS_PK"
-                      },
-                      "name": "ID",
-                      "type": "BIGINT"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "REQUESTOREMAIL",
-                      "type": "VARCHAR(255)"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "EXPLANATION",
-                      "type": "VARCHAR(255)"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "DATEREQUESTED",
-                      "type": "DATETIME"
-                    }
-                  },
-                  {
-                    "column": {
-                      "name": "DATENEEDED",
-                      "type": "DATETIME"
-                    }
-                  }
-                ],
-                "tableName": "RECREQUESTS"
-              }
-            }
-          ]
-        }
+          }
+        ]
       }
-    ]
-  }
+    }
+  ]
+}
