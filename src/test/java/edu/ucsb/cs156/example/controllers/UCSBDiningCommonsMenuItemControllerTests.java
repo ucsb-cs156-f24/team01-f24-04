@@ -43,7 +43,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
     @MockBean
     UserRepository userRepository;
 
-/*     @Test
+     @Test
         public void logged_out_users_cannot_get_all() throws Exception {
                 mockMvc.perform(get("/api/ucsbdiningcommonsmenuitem/all"))
                                 .andExpect(status().is(403)); // logged out users can't get all
@@ -76,7 +76,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
         public void logged_in_regular_users_cannot_post() throws Exception {
                 mockMvc.perform(post("/api/ucsbdiningcommonsmenuitem/post"))
                                 .andExpect(status().is(403)); // only admins can post
-        }*/
+        }
 
         // // Tests with mocks for database actions
 
