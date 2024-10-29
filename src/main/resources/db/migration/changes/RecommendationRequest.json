@@ -1,0 +1,68 @@
+{
+    "databaseChangeLog": [
+      {
+        "changeSet": {
+          "id": "RecRequest-1",
+          "author": "alvinwang",
+          "preConditions": [
+            {
+              "onFail": "MARK_RAN"
+            },
+            {
+              "not": [
+                {
+                  "tableExists": {
+                    "tableName": "RECREQUESTS"
+                  }
+                }
+              ]
+            }
+          ],
+          "changes": [
+            {
+              "createTable": {
+                "columns": [
+                  {
+                    "column": {
+                      "autoIncrement": true,
+                      "constraints": {
+                        "primaryKey": true,
+                        "primaryKeyName": "RECREQUESTS_PK"
+                      },
+                      "name": "ID",
+                      "type": "BIGINT"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "REQUESTOREMAIL",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "EXPLANATION",
+                      "type": "VARCHAR(255)"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "DATEREQUESTED",
+                      "type": "DATETIME"
+                    }
+                  },
+                  {
+                    "column": {
+                      "name": "DATENEEDED",
+                      "type": "DATETIME"
+                    }
+                  }
+                ],
+                "tableName": "RECREQUESTS"
+              }
+            }
+          ]
+        }
+      }
+    ]
+  }
