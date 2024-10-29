@@ -207,21 +207,21 @@ public class RecommendationRequestControllerTests extends ControllerTestCase {
                 // arrange
 
                 LocalDateTime ldt1 = LocalDateTime.parse("2022-01-03T00:00:00");
-                LocalDateTime ldt2 = LocalDateTime.parse("2023-01-03T00:00:00");
+                LocalDateTime ldt2 = LocalDateTime.parse("2023-03-03T00:00:00");
 
                 RecommendationRequest recommendationRequestOrig = RecommendationRequest.builder()
                                 .requesterEmail("cgaucho@ucsb.edu")
-                                .professorEmail("phtcon@ucsb.edu")
+                                .professorEmail("alvinwang@ucsb.edu")
                                 .explanation("BS/MSprogram")
                                 .dateRequested(ldt1)
                                 .dateNeeded(ldt1)
-                                .done(true)
+                                .done(false)
                                 .build();
 
                 RecommendationRequest recommendationRequestEdited = RecommendationRequest.builder()
                                 .requesterEmail("alvinwang@ucsb.edu")
                                 .professorEmail("phtcon@ucsb.edu")
-                                .explanation("BS/MSprogram")
+                                .explanation("whatever")
                                 .dateRequested(ldt2)
                                 .dateNeeded(ldt2)
                                 .done(true)
