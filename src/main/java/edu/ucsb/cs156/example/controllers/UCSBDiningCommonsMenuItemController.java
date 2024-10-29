@@ -37,12 +37,27 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     @Autowired
     UCSBDiningCommonsMenuItemRepository ucsbDiningCommonsMenuItemRepository;
 
+    @Operation(summary= "List all menu items")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("/all")
     public Iterable<UCSBDiningCommonMenuItem> allUCSBDiningCommonsMenuItems() {
         Iterable<UCSBDiningCommonMenuItem> menuItem = ucsbDiningCommonsMenuItemRepository.findAll();
         return menuItem;
     }
 
+    @Operation(summary= "Get a single menu item")
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @GetMapping("")
+    public UCSBDiningCommonMenuItem getById(
+            @Parameter(name="id") @RequestParam Long id) {
+        UCSBDiningCommonMenuItem ucsbDiningCommonMenuItem = ucsbDiningCommonsMenuItemRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(UCSBDiningCommonMenuItem.class, id));
+
+        return ucsbDiningCommonMenuItem;
+    }
+
+    @Operation(summary= "Create a new menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/post")
     public UCSBDiningCommonMenuItem postUCSBDiningCommonsMenuItem(
         @Parameter(name="diningCommonsCode") @RequestParam String diningCommonsCode,
@@ -65,6 +80,8 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
     return savedUcsbDiningCommonMenuItem;
 }
 
+    @Operation(summary= "Delete a menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("")
     public Object deleteUCSBDiningCommonMenuItem(
             @Parameter(name="id") @RequestParam Long id) {
@@ -75,6 +92,8 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         return genericMessage("UCSBDiningCommonMenuItem with id %s deleted".formatted(id));
     }
 
+    @Operation(summary= "Update a single menu item")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("")
     public UCSBDiningCommonMenuItem updateUCSBDiningCommonMenuItem(
             @Parameter(name="id") @RequestParam Long id,
