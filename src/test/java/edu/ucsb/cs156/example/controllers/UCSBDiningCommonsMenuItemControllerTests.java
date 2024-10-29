@@ -222,6 +222,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.empty());
 
+
                 // act
                 MvcResult response = mockMvc.perform(
                                 delete("/api/ucsbdiningcommonsmenuitem?id=15")
@@ -232,6 +233,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 verify(ucsbDiningCommonsMenuItemRepository, times(1)).findById(15L);
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("UCSBDiningCommonMenuItem with id 15 not found", json.get("message"));
+
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -285,7 +287,6 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 String requestBody = mapper.writeValueAsString(ucsbEditedMenuItem);
 
                 when(ucsbDiningCommonsMenuItemRepository.findById(eq(67L))).thenReturn(Optional.empty());
-
                 // act
                 MvcResult response = mockMvc.perform(
                                 put("/api/ucsbdiningcommonsmenuitem?id=67")
