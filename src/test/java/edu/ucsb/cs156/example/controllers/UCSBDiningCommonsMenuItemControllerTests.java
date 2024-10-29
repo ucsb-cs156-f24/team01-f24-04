@@ -199,7 +199,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                                 .build();
 
                 when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.of(UCSBDiningCommonMenuItem1));
-
+          
                 // act
                 MvcResult response = mockMvc.perform(
                                 delete("/api/ucsbdiningcommonsmenuitem?id=15")
@@ -212,6 +212,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
 
                 Map<String, Object> json = responseToJson(response);
                 assertEquals("UCSBDiningCommonMenuItem with id 15 deleted", json.get("message"));
+
         }
 
         @WithMockUser(roles = { "ADMIN", "USER" })
@@ -221,6 +222,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 // arrange
 
                 when(ucsbDiningCommonsMenuItemRepository.findById(eq(15L))).thenReturn(Optional.empty());
+
 
                 // act
                 MvcResult response = mockMvc.perform(
@@ -234,7 +236,7 @@ public class UCSBDiningCommonsMenuItemControllerTests extends ControllerTestCase
                 assertEquals("UCSBDiningCommonMenuItem with id 15 not found", json.get("message"));
         }
 
-        /*@WithMockUser(roles = { "ADMIN", "USER" })
+
         @Test
         public void admin_can_edit_an_existing_UCSBDiningCommonsMenuItem() throws Exception {
                 // arrange

@@ -74,5 +74,4 @@ public class UCSBDiningCommonsMenuItemController extends ApiController {
         ucsbDiningCommonsMenuItemRepository.delete(ucsbDiningCommonMenuItem);
         return genericMessage("UCSBDiningCommonMenuItem with id %s deleted".formatted(id));
     }
-
 }
