@@ -325,6 +325,61 @@ public void admin_cannot_update_help_request_that_does_not_exist() throws Except
     assertEquals("EntityNotFoundException", json.get("type"));
     assertEquals("HelpRequest with id 1 not found", json.get("message"));
 }
+
+@WithMockUser(roles = { "USER" })
+    @Test
+    public void user_can_get_help_request_by_id_when_exists() throws Exception {
+        // Arrange
+        Long id = 1L;
+        HelpRequest helpRequest = new HelpRequest();
+        helpRequest.setId(id);
+        helpRequest.setRequesterEmail("test.user@example.com");
+        helpRequest.setTeamId("Team001");
+        helpRequest.setTableOrBreakoutRoom("Table 5");
+        helpRequest.setExplanation("Need assistance with project setup.");
+        helpRequest.setSolved(false);
+
+        when(helpRequestRepository.findById(id)).thenReturn(Optional.of(helpRequest));
+
+        // Act
+        MvcResult response = mockMvc.perform(get("/api/helprequest")
+                        .param("id", id.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        // Assert
+        verify(helpRequestRepository, times(1)).findById(id);
+        String expectedJson = mapper.writeValueAsString(helpRequest);
+        String responseString = response.getResponse().getContentAsString();
+        assertEquals(expectedJson, responseString);
+    }
+
+    // Test case for when HelpRequest with the given ID does not exist
+    @WithMockUser(roles = { "USER" })
+    @Test
+    public void user_gets_not_found_when_help_request_does_not_exist() throws Exception {
+        // Arrange
+        Long id = 1L;
+
+        when(helpRequestRepository.findById(id)).thenReturn(Optional.empty());
+
+        // Act
+        MvcResult response = mockMvc.perform(get("/api/helprequest")
+                        .param("id", id.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        // Assert
+        verify(helpRequestRepository, times(1)).findById(id);
+        String expectedMessage = String.format("HelpRequest with id %d not found", id);
+        Map<String, Object> json = responseToJson(response);
+        assertEquals("EntityNotFoundException", json.get("type"));
+        assertEquals(expectedMessage, json.get("message"));
+    }
         
 }
 

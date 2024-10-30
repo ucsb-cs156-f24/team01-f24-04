@@ -52,7 +52,7 @@ public class HelpRequestController extends ApiController {
     }
 
     /**
-     * Post a new MenuItemReview 
+     * Post a new HelpRequest
      * 
      * @param requesterEmail
      * @param teamId
@@ -96,16 +96,16 @@ public class HelpRequestController extends ApiController {
            * @param id the id of the review
            * @return a HelpRequest object
            */
-    //       @Operation(summary= "Get a single date")
-    //       @PreAuthorize("hasRole('ROLE_USER')")
-    //       @GetMapping("")
-    //       public HelpRequest getById(
-    //               @Parameter(name="id") @RequestParam Long id) {
-    //           HelpRequest menuItemReview = HelpRequestRepository.findById(id)
-    //                   .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+           @Operation(summary= "Get a single request")
+           @PreAuthorize("hasRole('ROLE_USER')")
+           @GetMapping("")
+           public HelpRequest getById(
+                   @Parameter(name="id") @RequestParam Long id) {
+               HelpRequest helpRequest = helpRequestRepository.findById(id)
+                       .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
 
-    //           return menuItemReview;
-    //       }
+               return helpRequest;
+           }
                 
              /**
             * Delete a HelpRequest
