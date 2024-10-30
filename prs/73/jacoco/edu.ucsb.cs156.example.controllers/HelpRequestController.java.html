@@ -126,33 +126,32 @@ import java.time.LocalDateTime;
              }
                   
                 
-    //         /**
-    //         * Update a single review
-    //         * 
-    //         * @param id            id of the review to update
-    //         * @param incoming      the new review
-    //         * @return the updated review object
-    //         */
-    //         @Operation(summary= &quot;Update a single request&quot;)
-    //         @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
-    //         @PutMapping(&quot;&quot;)
-    //         public HelpRequest updateMenuItemReview(
-    //           @Parameter(name=&quot;id&quot;) @RequestParam Long id,
-    //           @RequestBody @Valid HelpRequest incoming) {
+             /**
+             * Update a single review
+             * 
+             * @param id            id of the review to update
+             * @param incoming      the new review
+             * @return the updated review object
+             */
+             @Operation(summary= &quot;Update a single request&quot;)
+             @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+             @PutMapping(&quot;&quot;)
+             public HelpRequest updateMenuItemReview(
+               @Parameter(name=&quot;id&quot;) @RequestParam Long id,
+               @RequestBody @Valid HelpRequest incoming) {
 
-    //           HelpRequest menuItemReview = HelpRequestRepository.findById(id)
-    //                   .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));
+<span class="fc" id="L143">               HelpRequest helpRequest = helpRequestRepository.findById(id)</span>
+<span class="fc" id="L144">                       .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));</span>
 
-    //           menuItemReview.setItemId(incoming.getItemId());
-    //           menuItemReview.setReviewerEmail(incoming.getReviewerEmail());
-    //           menuItemReview.setStars(incoming.getStars());
-    //           menuItemReview.setDateReviewed(incoming.getDateReviewed());
-    //           menuItemReview.setComments(incoming.getComments());
+<span class="fc" id="L146">                  helpRequest.setRequesterEmail(incoming.getRequesterEmail());</span>
+<span class="fc" id="L147">                  helpRequest.setTeamId(incoming.getTeamId());</span>
+<span class="fc" id="L148">                  helpRequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());</span>
+<span class="fc" id="L149">                  helpRequest.setRequestTime(incoming.getRequestTime());</span>
+<span class="fc" id="L150">                  helpRequest.setExplanation(incoming.getExplanation());</span>
+<span class="fc" id="L151">                  helpRequest.setSolved(incoming.getSolved());</span>
 
-
-    //           HelpRequestRepository.save(menuItemReview);
-
-    //           return helpRequest;
-    // }
+<span class="fc" id="L153">               helpRequestRepository.save(helpRequest);</span>
+<span class="fc" id="L154">               return helpRequest;</span>
+     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
