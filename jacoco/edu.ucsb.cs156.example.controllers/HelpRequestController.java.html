@@ -52,7 +52,7 @@ import java.time.LocalDateTime;
     }
 
     /**
-     * Post a new MenuItemReview 
+     * Post a new HelpRequest
      * 
      * @param requesterEmail
      * @param teamId
@@ -96,16 +96,16 @@ import java.time.LocalDateTime;
            * @param id the id of the review
            * @return a HelpRequest object
            */
-    //       @Operation(summary= &quot;Get a single date&quot;)
-    //       @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
-    //       @GetMapping(&quot;&quot;)
-    //       public HelpRequest getById(
-    //               @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
-    //           HelpRequest menuItemReview = HelpRequestRepository.findById(id)
-    //                   .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));
+           @Operation(summary= &quot;Get a single request&quot;)
+           @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
+           @GetMapping(&quot;&quot;)
+           public HelpRequest getById(
+                   @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L104">               HelpRequest helpRequest = helpRequestRepository.findById(id)</span>
+<span class="fc" id="L105">                       .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));</span>
 
-    //           return menuItemReview;
-    //       }
+<span class="fc" id="L107">               return helpRequest;</span>
+           }
                 
              /**
             * Delete a HelpRequest
