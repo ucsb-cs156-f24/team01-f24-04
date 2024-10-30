@@ -53,7 +53,7 @@ public class MenuItemReviewController extends ApiController {
      * @param itemId
      * @param reviewerEmail
      * @param stars
-     * @param localDateTime
+     * @param dateReviewed
      * @param comments
      * @return the new MenuItemReview
      */
@@ -64,21 +64,21 @@ public class MenuItemReviewController extends ApiController {
             @Parameter(name="itemId") @RequestParam long itemId,
             @Parameter(name="reviewerEmail") @RequestParam String reviewerEmail,
             @Parameter(name="stars") @RequestParam int stars,
-            @Parameter(name="localDateTime", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("localDateTime") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime localDateTime,
+            @Parameter(name="dateReviewed", description="date (in iso format, e.g. YYYY-mm-ddTHH:MM:SS; see https://en.wikipedia.org/wiki/ISO_8601)") @RequestParam("dateReviewed") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime dateReviewed,
             @Parameter(name="comments") @RequestParam String comments)
             throws JsonProcessingException {
 
         // For an explanation of @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
         // See: https://www.baeldung.com/spring-date-parameters
 
-        log.info("localDateTime={}", localDateTime);
+        log.info("dateReviewed={}", dateReviewed);
 
         MenuItemReview menuItemReview = new MenuItemReview();
         menuItemReview.setItemId(itemId);
         menuItemReview.setReviewerEmail(reviewerEmail);
         menuItemReview.setComments(comments);
         menuItemReview.setStars(stars);
-        menuItemReview.setDateReviewed(localDateTime);
+        menuItemReview.setDateReviewed(dateReviewed);
         MenuItemReview savedMenuItemReview = menuItemReviewRepository.save(menuItemReview);
         return savedMenuItemReview;
     }
@@ -89,7 +89,7 @@ public class MenuItemReviewController extends ApiController {
      * @return a MenuItemReview
      */
     @Operation(summary= "Get a single review")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_USER')") 
     @GetMapping("")
     public MenuItemReview getById(
             @Parameter(name="id") @RequestParam Long id) {
