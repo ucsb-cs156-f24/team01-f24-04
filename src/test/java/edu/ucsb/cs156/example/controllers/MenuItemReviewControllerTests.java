@@ -141,7 +141,7 @@ public class MenuItemReviewControllerTests extends ControllerTestCase{
         when(menuItemReviewRepository.save(eq(menuItemReview))).thenReturn(menuItemReview);
 
         MvcResult response = mockMvc.perform(
-                        post("/api/menuitemreviews/post?itemId=1&reviewerEmail=test@example.com&comments=Tasted great!&stars=5&localDateTime=2022-01-03T00:00:00")
+                        post("/api/menuitemreviews/post?itemId=1&reviewerEmail=test@example.com&comments=Tasted great!&stars=5&dateReviewed=2022-01-03T00:00:00")
                                         .with(csrf()))
                         .andExpect(status().isOk()).andReturn();
 
