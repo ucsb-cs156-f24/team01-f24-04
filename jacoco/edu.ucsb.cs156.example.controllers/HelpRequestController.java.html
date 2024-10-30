@@ -107,23 +107,23 @@ import java.time.LocalDateTime;
     //           return menuItemReview;
     //       }
                 
-    //         /**
-    //         * Delete a MenuItemReview
-    //         * 
-    //         * @param id         the id of the review to delete
-    //         * @return           a message indicating the review was deleted
-    //         */
-    //         @Operation(summary= &quot;Delete a HelpRequest&quot;)
-    //         @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
-    //         @DeleteMapping(&quot;&quot;)
-    //         public Object deleteMenuItemReview(
-    //               @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
-    //           HelpRequest menuItemReview = menuItemReviewRepository.findById(id)
-    //                   .orElseThrow(() -&gt; new EntityNotFoundException(MenuItemReview.class, id));
+             /**
+            * Delete a HelpRequest
+            * 
+            * @param id         the id of the review to delete
+            * @return           a message indicating the review was deleted
+             */
+             @Operation(summary= &quot;Delete a HelpRequest&quot;)
+             @PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
+             @DeleteMapping(&quot;&quot;)
+             public Object deleteHelpRequest(
+                   @Parameter(name=&quot;id&quot;) @RequestParam Long id) {
+<span class="fc" id="L121">               HelpRequest helpRequest = helpRequestRepository.findById(id)</span>
+<span class="fc" id="L122">                       .orElseThrow(() -&gt; new EntityNotFoundException(HelpRequest.class, id));</span>
                 
-    //           HelpRequestRepository.delete(menuItemReview);
-    //           return genericMessage(&quot;MenuItemReview with id %s deleted&quot;.formatted(id));
-    //         }
+<span class="fc" id="L124">               helpRequestRepository.delete(helpRequest);</span>
+<span class="fc" id="L125">               return genericMessage(&quot;HelpRequest with id %s deleted&quot;.formatted(id));</span>
+             }
                   
                 
     //         /**
