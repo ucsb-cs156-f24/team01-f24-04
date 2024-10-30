@@ -88,7 +88,7 @@ import java.time.LocalDateTime;
      * @param id the id of the review
      * @return a MenuItemReview
      */
-    @Operation(summary= &quot;Get a single date&quot;)
+    @Operation(summary= &quot;Get a single review&quot;)
     @PreAuthorize(&quot;hasRole('ROLE_USER')&quot;)
     @GetMapping(&quot;&quot;)
     public MenuItemReview getById(
