@@ -96,7 +96,7 @@ public class HelpRequestController extends ApiController {
            * @param id the id of the review
            * @return a HelpRequest object
            */
-           @Operation(summary= "Get a single date")
+           @Operation(summary= "Get a single request")
            @PreAuthorize("hasRole('ROLE_USER')")
            @GetMapping("")
            public HelpRequest getById(
