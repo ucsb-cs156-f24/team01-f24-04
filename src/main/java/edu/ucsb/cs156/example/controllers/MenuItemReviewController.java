@@ -88,7 +88,7 @@ public class MenuItemReviewController extends ApiController {
      * @param id the id of the review
      * @return a MenuItemReview
      */
-    @Operation(summary= "Get a single date")
+    @Operation(summary= "Get a single review")
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping("")
     public MenuItemReview getById(
