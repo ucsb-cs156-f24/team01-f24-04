@@ -107,23 +107,23 @@ public class HelpRequestController extends ApiController {
     //           return menuItemReview;
     //       }
                 
-    //         /**
-    //         * Delete a MenuItemReview
-    //         * 
-    //         * @param id         the id of the review to delete
-    //         * @return           a message indicating the review was deleted
-    //         */
-    //         @Operation(summary= "Delete a HelpRequest")
-    //         @PreAuthorize("hasRole('ROLE_ADMIN')")
-    //         @DeleteMapping("")
-    //         public Object deleteMenuItemReview(
-    //               @Parameter(name="id") @RequestParam Long id) {
-    //           HelpRequest menuItemReview = menuItemReviewRepository.findById(id)
-    //                   .orElseThrow(() -> new EntityNotFoundException(MenuItemReview.class, id));
+             /**
+            * Delete a HelpRequest
+            * 
+            * @param id         the id of the review to delete
+            * @return           a message indicating the review was deleted
+             */
+             @Operation(summary= "Delete a HelpRequest")
+             @PreAuthorize("hasRole('ROLE_ADMIN')")
+             @DeleteMapping("")
+             public Object deleteHelpRequest(
+                   @Parameter(name="id") @RequestParam Long id) {
+               HelpRequest helpRequest = helpRequestRepository.findById(id)
+                       .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
                 
-    //           HelpRequestRepository.delete(menuItemReview);
-    //           return genericMessage("MenuItemReview with id %s deleted".formatted(id));
-    //         }
+               helpRequestRepository.delete(helpRequest);
+               return genericMessage("HelpRequest with id %s deleted".formatted(id));
+             }
                   
                 
     //         /**
