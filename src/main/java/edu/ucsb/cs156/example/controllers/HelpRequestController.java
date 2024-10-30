@@ -52,7 +52,7 @@ public class HelpRequestController extends ApiController {
     }
 
     /**
-     * Post a new MenuItemReview 
+     * Post a new HelpRequest
      * 
      * @param requesterEmail
      * @param teamId
