@@ -96,16 +96,16 @@ public class HelpRequestController extends ApiController {
            * @param id the id of the review
            * @return a HelpRequest object
            */
-    //       @Operation(summary= "Get a single date")
-    //       @PreAuthorize("hasRole('ROLE_USER')")
-    //       @GetMapping("")
-    //       public HelpRequest getById(
-    //               @Parameter(name="id") @RequestParam Long id) {
-    //           HelpRequest menuItemReview = HelpRequestRepository.findById(id)
-    //                   .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+           @Operation(summary= "Get a single date")
+           @PreAuthorize("hasRole('ROLE_USER')")
+           @GetMapping("")
+           public HelpRequest getById(
+                   @Parameter(name="id") @RequestParam Long id) {
+               HelpRequest helpRequest = helpRequestRepository.findById(id)
+                       .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
 
-    //           return menuItemReview;
-    //       }
+               return helpRequest;
+           }
                 
              /**
             * Delete a HelpRequest
@@ -126,32 +126,31 @@ public class HelpRequestController extends ApiController {
              }
                   
                 
-    //         /**
-    //         * Update a single review
-    //         * 
-    //         * @param id            id of the review to update
-    //         * @param incoming      the new review
-    //         * @return the updated review object
-    //         */
-    //         @Operation(summary= "Update a single request")
-    //         @PreAuthorize("hasRole('ROLE_ADMIN')")
-    //         @PutMapping("")
-    //         public HelpRequest updateMenuItemReview(
-    //           @Parameter(name="id") @RequestParam Long id,
-    //           @RequestBody @Valid HelpRequest incoming) {
+             /**
+             * Update a single review
+             * 
+             * @param id            id of the review to update
+             * @param incoming      the new review
+             * @return the updated review object
+             */
+             @Operation(summary= "Update a single request")
+             @PreAuthorize("hasRole('ROLE_ADMIN')")
+             @PutMapping("")
+             public HelpRequest updateMenuItemReview(
+               @Parameter(name="id") @RequestParam Long id,
+               @RequestBody @Valid HelpRequest incoming) {
 
-    //           HelpRequest menuItemReview = HelpRequestRepository.findById(id)
-    //                   .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
+               HelpRequest helpRequest = helpRequestRepository.findById(id)
+                       .orElseThrow(() -> new EntityNotFoundException(HelpRequest.class, id));
 
-    //           menuItemReview.setItemId(incoming.getItemId());
-    //           menuItemReview.setReviewerEmail(incoming.getReviewerEmail());
-    //           menuItemReview.setStars(incoming.getStars());
-    //           menuItemReview.setDateReviewed(incoming.getDateReviewed());
-    //           menuItemReview.setComments(incoming.getComments());
+                  helpRequest.setRequesterEmail(incoming.getRequesterEmail());
+                  helpRequest.setTeamId(incoming.getTeamId());
+                  helpRequest.setTableOrBreakoutRoom(incoming.getTableOrBreakoutRoom());
+                  helpRequest.setRequestTime(incoming.getRequestTime());
+                  helpRequest.setExplanation(incoming.getExplanation());
+                  helpRequest.setSolved(incoming.getSolved());
 
-
-    //           HelpRequestRepository.save(menuItemReview);
-
-    //           return helpRequest;
-    // }
+               helpRequestRepository.save(helpRequest);
+               return helpRequest;
+     }
 }
